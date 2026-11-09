@@ -825,6 +825,47 @@
     .spots-badge i {
       color: #38BDF8;
     }
+    .spots-badge.spots-multi {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 5px;
+    }
+    .spots-badge-header {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      width: 100%;
+    }
+    .spots-multi-note {
+      font-size: 0.76rem;
+      color: #93C5FD;
+      opacity: 0.9;
+      font-weight: 500;
+    }
+    .spots-sub-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-inline-start: 22px;
+      width: calc(100% - 22px);
+    }
+    .spots-sub-row {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      font-size: 0.8rem;
+      line-height: 1.35;
+    }
+    .spots-sub-tag {
+      color: #60A5FA;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .spots-sub-val {
+      color: #E2E8F0;
+      font-weight: 500;
+    }
+
 
     /* METRICS GRID */
     .metrics-grid {
@@ -4607,6 +4648,48 @@ function getFilteredDestinations() {
   });
 }
 
+function formatSpotsBadge(d, t, lang) {
+  if (!d.available_spots) return '';
+
+  if (d.available_spots.includes('|')) {
+    const parts = d.available_spots.split('|').map(p => p.trim());
+    const progs = d.programs || [];
+
+    const rows = parts.map((part, idx) => {
+      let progName = progs[idx] || (lang === 'he' ? `הסכם ${idx+1}` : `Agreement ${idx+1}`);
+      if (progName.includes('Business School')) {
+        progName = lang === 'he' ? '💼 ביה"ס למנהל עסקים' : (lang === 'ar' ? '💼 كلية إدارة الأعمال' : '💼 Business School');
+      } else if (progName.includes('University level') || progName.includes('Bilateral')) {
+        progName = lang === 'he' ? '🏛️ כלל-אוניברסיטאי' : (lang === 'ar' ? '🏛️ لكافة التخصصات' : '🏛️ University-Wide');
+      } else if (progName.includes('Erasmus')) {
+        progName = lang === 'he' ? '🇪🇺 תכנית ארסמוס+' : (lang === 'ar' ? '🇪🇺 برنامج إيراسموس+' : '🇪🇺 Erasmus+ Track');
+      }
+      return `<div class="spots-sub-row"><span class="spots-sub-tag">• ${progName}:</span> <span class="spots-sub-val">${part}</span></div>`;
+    });
+
+    const multiLbl = lang === 'he' ? 'מכסות נפרדות לפי הסכמים' : (lang === 'ar' ? 'حصص منفصلة حسب الاتفاقيات' : 'Separate Quotas by Agreement');
+
+    return `
+      <div class="spots-badge spots-multi">
+        <div class="spots-badge-header">
+          <i class="fa-solid fa-bullseye"></i>
+          <div><strong>${t.spots}</strong> <span class="spots-multi-note">(${multiLbl}):</span></div>
+        </div>
+        <div class="spots-sub-list">
+          ${rows.join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  return `
+    <div class="spots-badge">
+      <i class="fa-solid fa-bullseye"></i>
+      <div><strong>${t.spots}</strong> ${d.available_spots}</div>
+    </div>
+  `;
+}
+
 function renderCards() {
   updateStats();
   const filtered = getFilteredDestinations();
@@ -4810,10 +4893,7 @@ function renderCards() {
         ${choiceSelectorHtml}
 
         <!-- Available Spots from Portal Agreements -->
-        <div class="spots-badge">
-          <i class="fa-solid fa-bullseye"></i>
-          <div><strong>${t.spots}</strong> ${d.available_spots}</div>
-        </div>
+        ${formatSpotsBadge(d, t, currentLang)}
 
         <!-- Metrics Grid -->
         <div class="metrics-grid">
