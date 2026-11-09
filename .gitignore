@@ -1,0 +1,5 @@
+# Ignore scratch and temporary test scripts
+scratch/
+__pycache__/
+*.pyc
+.gemini/
