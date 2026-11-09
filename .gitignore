@@ -3,3 +3,11 @@ scratch/
 __pycache__/
 *.pyc
 .gemini/
+
+# Environment and sensitive files
+.env
+*.env
+*.pem
+*.key
+credentials.json
+token.json
