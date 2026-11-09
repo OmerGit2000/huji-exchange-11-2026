@@ -4413,15 +4413,35 @@ function renderCards() {
     const jewishTitle = d.jewish_life_details ? `${t.jewish_filter_btn || 'Jewish Community & Kosher'}: ${d.jewish_life_details}` : (t.jewish_filter_btn || 'Jewish Community & Kosher Available');
     const jewishSymbol = d.has_jewish_life ? `<span class="jewish-symbol" title="${jewishTitle}">✡️</span>` : '';
 
-    // Filter fields tags (first 4, localized)
-    const fieldBadges = d.study_fields.slice(0, 4).map(f => {
-      const isPep = f.includes('PEP') || f === 'Economics' || f === 'Philosophy' || f === 'Political Science';
-      const locFieldName = getLocalizedField(f, currentLang);
-      return `<span class="tag-badge ${isPep ? 'tag-pep' : ''}">${locFieldName}</span>`;
-    }).join('');
+    // Dynamic tag sorting & highlighting based on user's active field selection
+    let displayFields = [...(d.study_fields || [])];
     
+    function isFieldMatch(field) {
+      if (!isSpecificFieldSelected) return false;
+      if (selectedFields.has(field)) return true;
+      for (const sel of selectedFields) {
+        if (field.includes(sel) || sel.includes(field)) return true;
+      }
+      return false;
+    }
+
+    if (isSpecificFieldSelected) {
+      // Prioritize matched fields so they appear first in the card tags
+      displayFields.sort((a, b) => {
+        const mA = isFieldMatch(a) ? 1 : 0;
+        const mB = isFieldMatch(b) ? 1 : 0;
+        return mB - mA;
+      });
+    }
+
+    const fieldBadges = displayFields.slice(0, 4).map(f => {
+      const isMatched = isFieldMatch(f);
+      const locFieldName = getLocalizedField(f, currentLang);
+      return `<span class="tag-badge ${isMatched ? 'tag-pep' : ''}">${locFieldName}</span>`;
+    }).join('');
+
     const moreTxt = currentLang === 'he' ? 'עוד' : (currentLang === 'ar' ? 'إضافية' : 'more');
-    const extraCount = d.study_fields.length > 4 ? `<span class="tag-badge">+${d.study_fields.length - 4} ${moreTxt}</span>` : '';
+    const extraCount = displayFields.length > 4 ? `<span class="tag-badge">+${displayFields.length - 4} ${moreTxt}</span>` : '';
 
     // Localized Degree Levels
     const locLevels = d.study_levels.map(l => getLocalizedLevel(l, currentLang)).join(' • ');
