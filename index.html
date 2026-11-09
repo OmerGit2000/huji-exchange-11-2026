@@ -2391,13 +2391,6 @@
         </span>
       </div>
 
-      <!-- Humanities Filter Toggle -->
-      <div class="filter-group">
-        <span class="pill pill-humanities" id="humanities-filter-btn" title="Only students in the Faculty of Humanities can apply to these exchanges">
-          🏛️ Humanities Only (26)
-        </span>
-      </div>
-
 
       <!-- Sort By -->
       <div class="filter-group" style="margin-left: auto;">
@@ -3993,7 +3986,6 @@ function setLanguage(lang) {
   document.getElementById('opt-end-feb').innerText = t.month_feb;
 
   document.getElementById('jewish-filter-btn').innerText = `${t.jewish_btn} (${jewish_cnt})`;
-  const hBtnEl = document.getElementById('humanities-filter-btn'); if (hBtnEl) { const hClean = (t.humanities_btn || 'Humanities Only').replace('🏛️', '').trim(); hBtnEl.innerText = `🏛️ ${hClean} (${dests.filter(d => d.has_humanities_track).length})`; }
 
   document.getElementById('i18n-lbl-sort').innerHTML = t.lbl_sort;
   const optChoice = document.getElementById('opt-sort-choice');
@@ -4298,7 +4290,6 @@ let activeYear = '';
 let activeProgram = '';
 let activeCountry = '';
 let jewishOnly = false;
-let humanitiesOnly = false;
 let selectedFields = new Set();
 let activeSort = 'choice';
 
@@ -4492,7 +4483,6 @@ function getBaseFilteredDestinations(ignoreLevel = false) {
 
     // Jewish life filter
     if (jewishOnly && !d.has_jewish_life) return false;
-    if (humanitiesOnly && !d.has_humanities_track) return false;
 
     // Study field filter: logical OR across selected fields & subject rankings
     if (selectedFields.size > 0 && selectedFields.size < ALL_FIELDS.length) {
@@ -4596,11 +4586,6 @@ function updateStats() {
   if (jBtn) {
     const jClean = t.jewish_btn.replace('✡️', '').trim();
     jBtn.innerText = `✡️ ${jClean} (${jewish})`;
-  }
-  const hBtn = document.getElementById('humanities-filter-btn');
-  if (hBtn) {
-    const hClean = (t.humanities_btn || 'Humanities Only').replace('🏛️', '').trim();
-    hBtn.innerText = `🏛️ ${hClean} (${humanities_cnt})`;
   }
 }
 
@@ -5178,15 +5163,6 @@ function initApp() {
     });
   }
 
-  // Humanities Only toggle button
-  const hBtn = document.getElementById('humanities-filter-btn');
-  if (hBtn) {
-    hBtn.addEventListener('click', () => {
-      humanitiesOnly = !humanitiesOnly;
-      hBtn.classList.toggle('active', humanitiesOnly);
-      renderCards();
-    });
-  }
 }
 
 if (document.readyState === 'loading') {
