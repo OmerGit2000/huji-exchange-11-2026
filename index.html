@@ -1095,7 +1095,282 @@
       border-color: #475569;
     }
 
-    /* MODAL FOR JEWISH LIFE */
+    
+    /* SYNC & SHARE FEATURE (OPTION 1) */
+    .btn-sync {
+      background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+      color: white;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      transition: all 0.2s ease;
+    }
+    .btn-sync:hover {
+      background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.45);
+      transform: translateY(-1px);
+    }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.78);
+      backdrop-filter: blur(5px);
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal-card {
+      background: #0F172A;
+      border: 1px solid #334155;
+      border-radius: 16px;
+      max-width: 520px;
+      width: 100%;
+      padding: 24px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.85);
+      position: relative;
+      animation: modalSlideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes modalSlideUp {
+      from { opacity: 0; transform: translateY(20px) scale(0.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: #1E293B;
+      border: 1px solid #334155;
+      color: #94A3B8;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+    .modal-close:hover {
+      color: white;
+      background: #334155;
+    }
+    [dir="rtl"] .modal-close {
+      right: auto;
+      left: 16px;
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .sync-summary-pill {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 0.82rem;
+      color: #E2E8F0;
+      margin-bottom: 16px;
+      text-align: center;
+      font-weight: 500;
+    }
+
+    .sync-qr-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      padding: 16px;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+    }
+
+    .sync-qr-wrapper {
+      padding: 12px;
+      background: white;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+    .sync-qr-wrapper img, .sync-qr-wrapper canvas {
+      display: block;
+      width: 190px !important;
+      height: 190px !important;
+    }
+
+    .sync-qr-guide {
+      text-align: center;
+    }
+    .sync-qr-guide-title {
+      font-weight: 700;
+      color: #93C5FD;
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .sync-qr-guide-sub {
+      color: #94A3B8;
+      font-size: 0.8rem;
+      max-width: 380px;
+      line-height: 1.4;
+      margin: 0 auto;
+    }
+
+    .sync-actions-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .btn-sync-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .btn-copy {
+      background: #1E293B;
+      border: 1px solid #334155;
+      color: #F8FAFC;
+    }
+    .btn-copy:hover {
+      background: #334155;
+      color: white;
+    }
+    .btn-whatsapp {
+      background: #059669;
+      border: 1px solid #10B981;
+      color: white;
+    }
+    .btn-whatsapp:hover {
+      background: #10B981;
+    }
+
+    .sync-tip-box {
+      background: rgba(245, 158, 11, 0.08);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 0.78rem;
+      color: #FDE68A;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      line-height: 1.4;
+    }
+
+    /* Import Modal Preview */
+    .import-preview-box {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 14px;
+      margin: 14px 0 18px;
+    }
+    .import-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 6px 0;
+      font-size: 0.85rem;
+      color: #E2E8F0;
+    }
+    .import-actions-row {
+      display: flex;
+      gap: 10px;
+    }
+    .btn-import-confirm {
+      flex: 1;
+      background: #10B981;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .btn-import-confirm:hover {
+      background: #059669;
+    }
+    .btn-import-cancel {
+      background: transparent;
+      color: #94A3B8;
+      border: 1px solid #334155;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+    .btn-import-cancel:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: white;
+    }
+
+    /* Floating Toast */
+    .sync-toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #0F172A;
+      border: 1px solid #3B82F6;
+      color: #E2E8F0;
+      padding: 12px 22px;
+      border-radius: 30px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(59, 130, 246, 0.4);
+      z-index: 10000;
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      pointer-events: none;
+    }
+    .sync-toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+/* MODAL FOR JEWISH LIFE */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -2149,6 +2424,7 @@
   <!-- Leaflet CSS & JS for Interactive World Map -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
 
@@ -2190,6 +2466,9 @@
           <a href="HUJI_PEP_Exchange_Options.xlsx" class="btn btn-excel" id="i18n-btn-excel" download>
             <i class="fa-solid fa-file-excel"></i> Download Excel (Color-Coded)
           </a>
+          <button class="btn btn-sync" id="i18n-btn-sync" onclick="openSyncModal()">
+            <i class="fa-solid fa-mobile-screen-button"></i> Sync / Share
+          </button>
           <button class="btn btn-reset" id="i18n-btn-reset" onclick="resetToUserRatings()">
             <i class="fa-solid fa-rotate-left"></i> Reset Ratings
           </button>
@@ -2909,6 +3188,20 @@ const I18N = {
     btn_csv: '<i class="fa-solid fa-file-csv"></i> Download CSV',
     btn_export: '<i class="fa-solid fa-floppy-disk"></i> Export Ratings',
     btn_reset: '<i class="fa-solid fa-rotate-left"></i> Reset Changes',
+    btn_sync: '<i class="fa-solid fa-mobile-screen-button"></i> Sync / Share',
+    sync_modal_title: 'Sync Across Devices',
+    sync_modal_sub: 'Move your ratings, top 3 choices, and notes between PC and phone.',
+    sync_qr_title: 'Scan with your phone camera',
+    sync_qr_sub: 'Point your phone camera at this QR code to instantly load all your ratings and notes on mobile!',
+    sync_btn_copy: 'Copy Sync Link',
+    sync_btn_copied: 'Copied to clipboard!',
+    sync_btn_whatsapp: 'Send to WhatsApp',
+    sync_phone_tip: 'Working on your phone? Click <strong>Sync / Share</strong> on your phone to send the updated link back to your laptop anytime!',
+    sync_detect_title: 'Sync Data Detected!',
+    sync_detect_sub: 'Incoming exchange rankings found in this link.',
+    sync_btn_import: 'Import & Sync on this Device',
+    sync_btn_cancel: 'Keep Existing Data',
+    sync_success_toast: 'Synced successfully! Your ratings and notes are now active on this device.',
     
     stat_total_lbl: 'Active Destinations',
     stat_total_sub: 'Across 26 countries',
@@ -3064,6 +3357,20 @@ const I18N = {
     btn_csv: '<i class="fa-solid fa-file-csv"></i> הורדת CSV',
     btn_export: '<i class="fa-solid fa-floppy-disk"></i> ייצוא דירוגים',
     btn_reset: '<i class="fa-solid fa-rotate-left"></i> איפוס שינויים',
+    btn_sync: '<i class="fa-solid fa-mobile-screen-button"></i> סנכרון לטלפון / שיתוף',
+    sync_modal_title: 'סנכרון בין המחשב לטלפון',
+    sync_modal_sub: 'העבר את כל הדירוגים, מקומות 1/2/3 וההערות שלך בקלות בין המכשירים.',
+    sync_qr_title: 'כוון את מצלמת הטלפון לכאן',
+    sync_qr_sub: 'סרוק עם המצלמה בטלפון כדי לפתוח ולשמור את כל הדירוגים וההערות שלך בנייד.',
+    sync_btn_copy: 'העתק קישור סנכרון',
+    sync_btn_copied: 'הועתק ללוח!',
+    sync_btn_whatsapp: 'שלח בוואטסאפ',
+    sync_phone_tip: 'ערכת בטלפון? לחץ על <strong>סנכרון / שיתוף</strong> בטלפון כדי להעביר את הקישור המעודכן בחזרה למחשב!',
+    sync_detect_title: 'זוהו נתוני סנכרון חדשים!',
+    sync_detect_sub: 'נמצאו דירוגים והערות בקישור שנפתח.',
+    sync_btn_import: 'ייבא וסנכרן עכשיו',
+    sync_btn_cancel: 'השאר נתונים קיימים',
+    sync_success_toast: 'הסנכרון הושלם בהצלחה! כל הדירוגים וההערות שלך פעילים כעת במכשיר זה.',
     
     stat_total_lbl: 'יעדים פעילים',
     stat_total_sub: 'ב-24 מדינות',
@@ -3925,6 +4232,30 @@ function setLanguage(lang) {
   if (recEl && t.lang_en_rec) recEl.innerText = t.lang_en_rec;
   document.getElementById('i18n-btn-excel').innerHTML = t.btn_excel;
   document.getElementById('i18n-btn-reset').innerHTML = t.btn_reset;
+  const syncBtn = document.getElementById('i18n-btn-sync');
+  if (syncBtn && t.btn_sync) syncBtn.innerHTML = t.btn_sync;
+  const smTitle = document.getElementById('i18n-sync-modal-title');
+  if (smTitle && t.sync_modal_title) smTitle.innerText = t.sync_modal_title;
+  const smSub = document.getElementById('i18n-sync-modal-sub');
+  if (smSub && t.sync_modal_sub) smSub.innerText = t.sync_modal_sub;
+  const sqTitle = document.getElementById('i18n-sync-qr-title');
+  if (sqTitle && t.sync_qr_title) sqTitle.innerHTML = `<i class="fa-solid fa-camera"></i> ${t.sync_qr_title}`;
+  const sqSub = document.getElementById('i18n-sync-qr-sub');
+  if (sqSub && t.sync_qr_sub) sqSub.innerText = t.sync_qr_sub;
+  const scBtn = document.getElementById('i18n-sync-btn-copy');
+  if (scBtn && t.sync_btn_copy) scBtn.innerText = t.sync_btn_copy;
+  const swBtn = document.getElementById('i18n-sync-btn-whatsapp');
+  if (swBtn && t.sync_btn_whatsapp) swBtn.innerText = t.sync_btn_whatsapp;
+  const spTip = document.getElementById('i18n-sync-phone-tip');
+  if (spTip && t.sync_phone_tip) spTip.innerHTML = t.sync_phone_tip;
+  const sdTitle = document.getElementById('i18n-sync-detect-title');
+  if (sdTitle && t.sync_detect_title) sdTitle.innerText = t.sync_detect_title;
+  const sdSub = document.getElementById('i18n-sync-detect-sub');
+  if (sdSub && t.sync_detect_sub) sdSub.innerText = t.sync_detect_sub;
+  const sbiBtn = document.getElementById('i18n-sync-btn-import');
+  if (sbiBtn && t.sync_btn_import) sbiBtn.innerText = t.sync_btn_import;
+  const sbcBtn = document.getElementById('i18n-sync-btn-cancel');
+  if (sbcBtn && t.sync_btn_cancel) sbcBtn.innerText = t.sync_btn_cancel;
 
   // Stats strip
   document.getElementById('i18n-stat-total-lbl').innerText = t.stat_total_lbl;
@@ -4415,6 +4746,241 @@ function resetToUserRatings() {
     updateStats();
     renderCards();
   }
+}
+
+
+// ==========================================
+// TWO-WAY SYNC VIA QR CODE & URL (OPTION 1)
+// ==========================================
+let pendingSyncPayload = null;
+
+function generateSyncUrl() {
+  const nameToId = {};
+  RAW_DESTINATIONS.forEach(d => { nameToId[d.name] = d.id; });
+
+  const r = {};
+  for (const [name, rating] of Object.entries(userRatings)) {
+    if (rating && rating !== 'unrated') {
+      const id = nameToId[name];
+      if (id) r[id] = rating[0]; // 'g', 'y', 'r'
+    }
+  }
+
+  const c = [topChoices[1] || null, topChoices[2] || null, topChoices[3] || null];
+
+  const n = {};
+  for (const [id, note] of Object.entries(userNotes)) {
+    if (note && note.trim().length > 0) {
+      n[id] = note.trim();
+    }
+  }
+
+  const payload = { r, c, n, v: 1 };
+  const jsonStr = JSON.stringify(payload);
+  const encoded = btoa(unescape(encodeURIComponent(jsonStr)));
+  const baseUrl = window.location.origin + window.location.pathname;
+  return `${baseUrl}#sync=${encoded}`;
+}
+
+function decodeSyncPayload(hash) {
+  try {
+    const b64 = hash.replace(/^#sync=/, '');
+    if (!b64) return null;
+    const jsonStr = decodeURIComponent(escape(atob(b64)));
+    return JSON.parse(jsonStr);
+  } catch(e) {
+    console.error("Failed to decode sync payload:", e);
+    return null;
+  }
+}
+
+function openSyncModal() {
+  const syncUrl = generateSyncUrl();
+  const modal = document.getElementById('sync-modal');
+  if (!modal) return;
+
+  const t = I18N[currentLang] || I18N.en;
+  const waMsg = encodeURIComponent((currentLang === 'he' ? 'הנה רשימת חילופי הסטודנטים המעודכנת שלי באוניברסיטה העברית:' : (currentLang === 'ar' ? 'إليك قائمة التبادل الطلابي المحدثة الخاصة بي في الجامعة العبرية:' : 'Here is my updated HUJI exchange list:')) + '\n' + syncUrl);
+  const waBtn = document.getElementById('sync-whatsapp-btn');
+  if (waBtn) waBtn.href = `https://api.whatsapp.com/send?text=${waMsg}`;
+
+  const ratedCount = Object.values(userRatings).filter(r => r && r !== 'unrated').length;
+  const choiceCount = [topChoices[1], topChoices[2], topChoices[3]].filter(Boolean).length;
+  const noteCount = Object.values(userNotes).filter(n => n && n.trim().length > 0).length;
+
+  const sumEl = document.getElementById('sync-summary-pill');
+  if (sumEl) {
+    if (currentLang === 'he') {
+      sumEl.innerHTML = `📊 לסנכרון: <strong>${ratedCount}</strong> מוסדות מדורגים • <strong>${choiceCount}</strong> בחירות מובילות • <strong>${noteCount}</strong> הערות אישיות`;
+    } else if (currentLang === 'ar') {
+      sumEl.innerHTML = `📊 للمزامنة: <strong>${ratedCount}</strong> جامعات مقيمة • <strong>${choiceCount}</strong> خيارات مفضلة • <strong>${noteCount}</strong> ملاحظات شخصية`;
+    } else {
+      sumEl.innerHTML = `📊 Ready to Sync: <strong>${ratedCount}</strong> Rated Unis • <strong>${choiceCount}</strong> Top Choices • <strong>${noteCount}</strong> Personal Notes`;
+    }
+  }
+
+  const qrContainer = document.getElementById('sync-qrcode');
+  if (qrContainer) {
+    qrContainer.innerHTML = '';
+    try {
+      if (typeof QRCode !== 'undefined') {
+        new QRCode(qrContainer, {
+          text: syncUrl,
+          width: 190,
+          height: 190,
+          colorDark: "#0F172A",
+          colorLight: "#FFFFFF",
+          correctLevel: QRCode.CorrectLevel.M
+        });
+      } else {
+        qrContainer.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=190x190&data=${encodeURIComponent(syncUrl)}" alt="QR Code" style="width:190px; height:190px;" />`;
+      }
+    } catch(e) {
+      qrContainer.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=190x190&data=${encodeURIComponent(syncUrl)}" alt="QR Code" style="width:190px; height:190px;" />`;
+    }
+  }
+
+  modal.classList.add('open');
+}
+
+function closeSyncModal() {
+  const modal = document.getElementById('sync-modal');
+  if (modal) modal.classList.remove('open');
+}
+
+function closeSyncModalOnBackdrop(e) {
+  if (e.target && e.target.id === 'sync-modal') {
+    closeSyncModal();
+  }
+}
+
+function copySyncLink() {
+  const syncUrl = generateSyncUrl();
+  const t = I18N[currentLang] || I18N.en;
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(syncUrl).then(() => {
+      showToast(t.sync_btn_copied || 'Copied to clipboard!');
+    }).catch(() => fallbackCopy(syncUrl, t));
+  } else {
+    fallbackCopy(syncUrl, t);
+  }
+}
+
+function fallbackCopy(text, t) {
+  const tempInput = document.createElement('input');
+  tempInput.value = text;
+  document.body.appendChild(tempInput);
+  tempInput.select();
+  document.execCommand('copy');
+  document.body.removeChild(tempInput);
+  showToast(t.sync_btn_copied || 'Copied to clipboard!');
+}
+
+function showToast(msg) {
+  let toast = document.getElementById('sync-toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'sync-toast';
+    toast.className = 'sync-toast';
+    document.body.appendChild(toast);
+  }
+  toast.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#10B981;"></i> <span>${msg}</span>`;
+  toast.classList.add('show');
+  setTimeout(() => {
+    toast.classList.remove('show');
+  }, 3200);
+}
+
+function checkIncomingSync() {
+  if (!window.location.hash || !window.location.hash.startsWith('#sync=')) return;
+  const payload = decodeSyncPayload(window.location.hash);
+  if (!payload) return;
+
+  pendingSyncPayload = payload;
+  showImportModal(payload);
+}
+
+function showImportModal(payload) {
+  const modal = document.getElementById('import-modal');
+  if (!modal) return;
+
+  const rCount = payload.r ? Object.keys(payload.r).length : 0;
+  const cCount = payload.c ? payload.c.filter(Boolean).length : 0;
+  const nCount = payload.n ? Object.keys(payload.n).length : 0;
+
+  const preview = document.getElementById('import-preview-box');
+  if (preview) {
+    if (currentLang === 'he') {
+      preview.innerHTML = `
+        <div class="import-row"><i class="fa-solid fa-star" style="color:#FBBF24;"></i> <strong>${rCount}</strong> דירוגי מוסדות (ירוק / צהוב / אדום)</div>
+        <div class="import-row"><i class="fa-solid fa-crown" style="color:#F59E0B;"></i> <strong>${cCount}</strong> בחירות מובילות (1, 2, 3)</div>
+        <div class="import-row"><i class="fa-solid fa-comment-dots" style="color:#60A5FA;"></i> <strong>${nCount}</strong> הערות אישיות שמורות</div>
+      `;
+    } else if (currentLang === 'ar') {
+      preview.innerHTML = `
+        <div class="import-row"><i class="fa-solid fa-star" style="color:#FBBF24;"></i> <strong>${rCount}</strong> تقييمات للجامعات (أخضر / أصفر / أحمر)</div>
+        <div class="import-row"><i class="fa-solid fa-crown" style="color:#F59E0B;"></i> <strong>${cCount}</strong> اختيارات مفضلة (1، 2، 3)</div>
+        <div class="import-row"><i class="fa-solid fa-comment-dots" style="color:#60A5FA;"></i> <strong>${nCount}</strong> ملاحظات شخصية محفوظة</div>
+      `;
+    } else {
+      preview.innerHTML = `
+        <div class="import-row"><i class="fa-solid fa-star" style="color:#FBBF24;"></i> <strong>${rCount}</strong> Institution Ratings (Green / Yellow / Red)</div>
+        <div class="import-row"><i class="fa-solid fa-crown" style="color:#F59E0B;"></i> <strong>${cCount}</strong> Top Preferences (1st, 2nd, 3rd)</div>
+        <div class="import-row"><i class="fa-solid fa-comment-dots" style="color:#60A5FA;"></i> <strong>${nCount}</strong> Personal Saved Notes</div>
+      `;
+    }
+  }
+
+  modal.classList.add('open');
+}
+
+function confirmImportSync() {
+  if (!pendingSyncPayload) return;
+
+  const idToName = {};
+  RAW_DESTINATIONS.forEach(d => { idToName[d.id] = d.name; });
+
+  if (pendingSyncPayload.r) {
+    for (const [id, rCode] of Object.entries(pendingSyncPayload.r)) {
+      const name = idToName[id];
+      if (name) {
+        userRatings[name] = rCode === 'g' ? 'green' : (rCode === 'y' ? 'yellow' : 'red');
+      }
+    }
+    localStorage.setItem(STORAGE_KEY_RATINGS, JSON.stringify(userRatings));
+  }
+
+  if (pendingSyncPayload.c && Array.isArray(pendingSyncPayload.c)) {
+    topChoices = {
+      1: pendingSyncPayload.c[0] || null,
+      2: pendingSyncPayload.c[1] || null,
+      3: pendingSyncPayload.c[2] || null
+    };
+    localStorage.setItem(STORAGE_KEY_CHOICES, JSON.stringify(topChoices));
+  }
+
+  if (pendingSyncPayload.n) {
+    userNotes = Object.assign({}, userNotes, pendingSyncPayload.n);
+    localStorage.setItem(STORAGE_KEY_NOTES, JSON.stringify(userNotes));
+  }
+
+  history.replaceState(null, '', window.location.pathname + window.location.search);
+
+  const modal = document.getElementById('import-modal');
+  if (modal) modal.classList.remove('open');
+
+  updateStats();
+  renderCards();
+  if (currentView === 'map' && leafletMap) updateMapMarkers();
+
+  const t = I18N[currentLang] || I18N.en;
+  showToast(t.sync_success_toast || 'Synced successfully across devices!');
+}
+
+function cancelImportSync() {
+  history.replaceState(null, '', window.location.pathname + window.location.search);
+  const modal = document.getElementById('import-modal');
+  if (modal) modal.classList.remove('open');
 }
 
 function exportRankingsJSON() {
@@ -5176,6 +5742,73 @@ if (document.readyState === 'loading') {
 <button id="scroll-top-btn" class="scroll-top-btn" onclick="scrollToTop()" title="Back to top">
   <i class="fa-solid fa-arrow-up"></i>
 </button>
+
+
+<!-- SYNC & SHARE MODAL (OPTION 1) -->
+<div class="modal-overlay" id="sync-modal" onclick="closeSyncModalOnBackdrop(event)">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closeSyncModal()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="modal-header">
+      <i class="fa-solid fa-mobile-screen-button" style="color: #60A5FA; font-size: 1.4rem;"></i>
+      <div>
+        <h3 id="i18n-sync-modal-title" style="margin: 0; font-size: 1.2rem; color: white;">Sync Across Devices</h3>
+        <p id="i18n-sync-modal-sub" style="margin: 2px 0 0; font-size: 0.8rem; color: #94A3B8;">Move your ratings, top 3 choices, and notes between PC and phone.</p>
+      </div>
+    </div>
+    
+    <div class="sync-summary-pill" id="sync-summary-pill"></div>
+
+    <div class="sync-qr-section" id="sync-qr-section">
+      <div class="sync-qr-wrapper">
+        <div id="sync-qrcode"></div>
+      </div>
+      <div class="sync-qr-guide">
+        <div class="sync-qr-guide-title" id="i18n-sync-qr-title"><i class="fa-solid fa-camera"></i> Scan with your phone camera</div>
+        <div class="sync-qr-guide-sub" id="i18n-sync-qr-sub">Point your phone camera at this QR code to instantly load all your ratings and notes on mobile!</div>
+      </div>
+    </div>
+
+    <div class="sync-actions-row">
+      <button class="btn-sync-action btn-copy" onclick="copySyncLink()">
+        <i class="fa-regular fa-copy"></i> <span id="i18n-sync-btn-copy">Copy Sync Link</span>
+      </button>
+      <a href="#" target="_blank" class="btn-sync-action btn-whatsapp" id="sync-whatsapp-btn">
+        <i class="fa-brands fa-whatsapp"></i> <span id="i18n-sync-btn-whatsapp">Send to WhatsApp</span>
+      </a>
+    </div>
+
+    <div class="sync-tip-box">
+      <i class="fa-solid fa-lightbulb" style="color: #FBBF24;"></i>
+      <span id="i18n-sync-phone-tip">Working on your phone? Click <strong>Sync / Share</strong> on your phone to send the updated link back to your laptop anytime!</span>
+    </div>
+  </div>
+</div>
+
+<!-- INCOMING SYNC IMPORT MODAL -->
+<div class="modal-overlay" id="import-modal">
+  <div class="modal-card">
+    <div class="modal-header">
+      <i class="fa-solid fa-cloud-arrow-down" style="color: #34D399; font-size: 1.5rem;"></i>
+      <div>
+        <h3 id="i18n-sync-detect-title" style="margin: 0; font-size: 1.25rem; color: white;">Sync Data Detected!</h3>
+        <p id="i18n-sync-detect-sub" style="margin: 2px 0 0; font-size: 0.82rem; color: #94A3B8;">Incoming exchange rankings found in this link.</p>
+      </div>
+    </div>
+
+    <div class="import-preview-box" id="import-preview-box"></div>
+
+    <div class="import-actions-row">
+      <button class="btn btn-import-confirm" onclick="confirmImportSync()">
+        <i class="fa-solid fa-check"></i> <span id="i18n-sync-btn-import">Import & Sync on this Device</span>
+      </button>
+      <button class="btn btn-import-cancel" onclick="cancelImportSync()">
+        <span id="i18n-sync-btn-cancel">Keep Existing Data</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="sync-toast" id="sync-toast"></div>
 
 </body>
 </html>
