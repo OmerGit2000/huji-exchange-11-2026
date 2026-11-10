@@ -3374,7 +3374,7 @@ const I18N = {
     stat_total_lbl: 'יעדים פעילים',
     stat_total_sub: 'ב-24 מדינות',
     stat_green_lbl: '🟢 עדיפות ירוקה',
-    stat_green_sub: 'יעדי פפ"מ וכלכלה מובילים',
+    stat_green_sub: 'יעדי פכ"מ וכלכלה מובילים',
     stat_yellow_lbl: '🟡 פוטנציאל צהוב',
     stat_yellow_sub: 'אפשרויות משניות',
     stat_red_lbl: '🔴 עדיפות נמוכה',
@@ -3385,7 +3385,7 @@ const I18N = {
     search_placeholder: 'חיפוש אוניברסיטה, עיר, מדינה, תחום לימוד, דירוג...',
     all_years: 'כל השנים האקדמיות',
     select_fields_title: 'בחירת תחומי לימוד',
-    btn_pep_only: 'פפ"מ בלבד',
+    btn_pep_only: 'פכ"מ בלבד',
     btn_all: 'בחר הכל',
     btn_clear: 'נקה הכל',
     filter_fields_input: 'חיפוש תחומי לימוד...',
@@ -4101,7 +4101,7 @@ const COUNTRY_I18N = {
 // Study fields localization map
 const FIELDS_I18N = {
   "Integrative Program in Philosophy, Economics, and Politics (PEP)": {
-    he: 'תוכנית פפ"מ (פילוסופיה, כלכלה ומדע המדינה)',
+    he: 'תוכנית פכ"מ (פילוסופיה, כלכלה ומדע המדינה)',
     ar: 'برنامج PEP (الفلسفة، الاقتصاد والعلوم السياسية)'
   },
   "Economics": { he: 'כלכלה', ar: 'علم الاقتصاد' },
@@ -5382,7 +5382,7 @@ function renderCards() {
 
         if (d.subject_ranks && d.subject_ranks[field]) {
           fieldRank = d.subject_ranks[field];
-        } else if (field.includes('PEP') || field.includes('פפ"מ') || field.includes('פילוסופיה, כלכלה')) {
+        } else if (field.includes('PEP') || field.includes('פכ"מ') || field.includes('פילוסופיה, כלכלה')) {
           fieldRank = (d.subject_ranks && (d.subject_ranks['Integrative Program in Philosophy, Economics, and Politics (PEP)'] || d.subject_ranks['PEP'])) || d.rank_info;
         } else if (d.subject_ranks) {
           // Fuzzy match on subject_ranks keys
