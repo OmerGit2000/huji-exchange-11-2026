@@ -2604,6 +2604,7 @@
             <span style="font-size: 0.78rem; font-weight: 700; color: #9CA3AF;" id="i18n-select-fields-title">SELECT FIELDS</span>
             <div style="display: flex; gap: 6px;">
               <span class="multiselect-quick" id="btn-quick-all" onclick="selectAllFields(true)">All</span>
+              <span class="multiselect-quick" id="btn-quick-pep" onclick="quickSelectPEP()">PEP Only</span>
               <span class="multiselect-quick" id="btn-quick-clear" onclick="selectAllFields(false)">Clear</span>
             </div>
           </div>
@@ -4273,6 +4274,8 @@ function setLanguage(lang) {
   document.getElementById('opt-all-years').innerText = `${t.all_years} (${RAW_DESTINATIONS.length})`;
   document.getElementById('i18n-select-fields-title').innerText = t.select_fields_title;
   document.getElementById('btn-quick-all').innerText = t.btn_all;
+  const btnQuickPep = document.getElementById('btn-quick-pep');
+  if (btnQuickPep) btnQuickPep.innerText = t.btn_pep_only || 'PEP Only';
   document.getElementById('btn-quick-clear').innerText = t.btn_clear;
   document.getElementById('field-search').placeholder = t.filter_fields_input;
 
@@ -4687,18 +4690,11 @@ function selectAllFields(select) {
 }
 
 function quickSelectPEP() {
-  const pepFields = [
-    "Integrative Program in Philosophy, Economics, and Politics (PEP)",
-    "Economics",
-    "Philosophy",
-    "Political Science",
-    "Social Sciences",
-    "Business Administration"
-  ];
-  selectedFields = new Set(pepFields);
+  const pepField = "Integrative Program in Philosophy, Economics, and Politics (PEP)";
+  selectedFields = new Set([pepField]);
   const cbs = document.querySelectorAll('#multiselect-list input[type="checkbox"]');
   cbs.forEach(cb => {
-    cb.checked = pepFields.includes(cb.value);
+    cb.checked = (cb.value === pepField);
   });
   updateFieldBtnText();
   renderCards();
@@ -4710,6 +4706,9 @@ function updateFieldBtnText() {
   const t = I18N[currentLang] || I18N.en;
   if (selectedFields.size === ALL_FIELDS.length || selectedFields.size === 0) {
     textEl.innerHTML = `<i class="fa-solid fa-book-open"></i> ${t.study_fields_all || 'All Study Fields'}`;
+  } else if (selectedFields.size === 1 && selectedFields.has("Integrative Program in Philosophy, Economics, and Politics (PEP)")) {
+    const pepLabel = currentLang === 'he' ? 'פכ"מ' : 'PEP';
+    textEl.innerHTML = `<i class="fa-solid fa-book-open"></i> ${pepLabel} (1)`;
   } else {
     const template = t.study_fields_selected || '{n} Fields Selected';
     textEl.innerHTML = `<i class="fa-solid fa-book-open"></i> ${template.replace('{n}', selectedFields.size)}`;
@@ -4988,25 +4987,37 @@ function exportRankingsJSON() {
   dlAnchorElem.click();
 }
 
-// Helper to determine if destination matches ANY of the selected fields (Logical OR)
-function destinationMatchesFields(d, selectedFields) {
-  if (selectedFields.size === 0 || selectedFields.size === ALL_FIELDS.length) return true;
+function isPepField(str) {
+  if (!str) return false;
+  return str.includes('PEP') || str.includes('פכ"מ') || str.includes('Philosophy, Economics, and Politics');
+}
 
-  // 1. Direct or compound match in study_fields
-  for (const f of d.study_fields || []) {
-    if (selectedFields.has(f)) return true;
-    for (const sel of selectedFields) {
-      if (f.includes(sel) || (sel.includes('PEP') && f.includes('PEP'))) return true;
-    }
+function isFieldMatchExact(itemField, selectedField) {
+  if (itemField === selectedField) return true;
+
+  const isSelPep = isPepField(selectedField);
+  const isItemPep = isPepField(itemField);
+
+  if (isSelPep && isItemPep) return true;
+  if (isSelPep || isItemPep) return false;
+
+  // For compound fields like "Political Science & International Relations", allow matching sub-components
+  if (itemField.includes('&')) {
+    const parts = itemField.split('&').map(p => p.trim());
+    if (parts.includes(selectedField)) return true;
   }
 
-  // 2. Direct or compound match in subject_ranks
-  if (d.subject_ranks) {
-    for (const subKey of Object.keys(d.subject_ranks)) {
-      if (selectedFields.has(subKey)) return true;
-      for (const sel of selectedFields) {
-        if (subKey.includes(sel) || sel.includes(subKey) || (sel.includes('PEP') && subKey.includes('PEP'))) return true;
-      }
+  return false;
+}
+
+// Helper to determine if destination matches ANY of the selected fields (Logical OR)
+function destinationMatchesFields(d, selectedFields) {
+  if (!selectedFields || selectedFields.size === 0 || selectedFields.size === ALL_FIELDS.length) return true;
+
+  const destFields = d.study_fields || [];
+  for (const sel of selectedFields) {
+    for (const f of destFields) {
+      if (isFieldMatchExact(f, sel)) return true;
     }
   }
 
