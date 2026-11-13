@@ -2604,7 +2604,6 @@
             <span style="font-size: 0.78rem; font-weight: 700; color: #9CA3AF;" id="i18n-select-fields-title">SELECT FIELDS</span>
             <div style="display: flex; gap: 6px;">
               <span class="multiselect-quick" id="btn-quick-all" onclick="selectAllFields(true)">All</span>
-              <span class="multiselect-quick" id="btn-quick-pep" onclick="quickSelectPEP()">PEP Only</span>
               <span class="multiselect-quick" id="btn-quick-clear" onclick="selectAllFields(false)">Clear</span>
             </div>
           </div>
@@ -4274,8 +4273,6 @@ function setLanguage(lang) {
   document.getElementById('opt-all-years').innerText = `${t.all_years} (${RAW_DESTINATIONS.length})`;
   document.getElementById('i18n-select-fields-title').innerText = t.select_fields_title;
   document.getElementById('btn-quick-all').innerText = t.btn_all;
-  const btnQuickPep = document.getElementById('btn-quick-pep');
-  if (btnQuickPep) btnQuickPep.innerText = t.btn_pep_only || 'PEP Only';
   document.getElementById('btn-quick-clear').innerText = t.btn_clear;
   document.getElementById('field-search').placeholder = t.filter_fields_input;
 
@@ -4706,9 +4703,10 @@ function updateFieldBtnText() {
   const t = I18N[currentLang] || I18N.en;
   if (selectedFields.size === ALL_FIELDS.length || selectedFields.size === 0) {
     textEl.innerHTML = `<i class="fa-solid fa-book-open"></i> ${t.study_fields_all || 'All Study Fields'}`;
-  } else if (selectedFields.size === 1 && selectedFields.has("Integrative Program in Philosophy, Economics, and Politics (PEP)")) {
-    const pepLabel = currentLang === 'he' ? 'פכ"מ' : 'PEP';
-    textEl.innerHTML = `<i class="fa-solid fa-book-open"></i> ${pepLabel} (1)`;
+  } else if (selectedFields.size === 1) {
+    const singleField = Array.from(selectedFields)[0];
+    const locName = getLocalizedField(singleField, currentLang);
+    textEl.innerHTML = `<i class="fa-solid fa-book-open"></i> ${locName} (1)`;
   } else {
     const template = t.study_fields_selected || '{n} Fields Selected';
     textEl.innerHTML = `<i class="fa-solid fa-book-open"></i> ${template.replace('{n}', selectedFields.size)}`;
