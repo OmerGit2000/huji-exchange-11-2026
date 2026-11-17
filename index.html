@@ -2585,11 +2585,16 @@
 
       <!-- Academic Year Filter -->
       <select id="filter-year" class="select-control">
-        <option value="" selected id="opt-all-years">All Academic Years (103)</option>
-        <option value="2026/2027">2026/2027</option>
-        <option value="2027/2028">2027/2028</option>
-        <option value="2025/2026">2025/2026</option>
-        <option value="2024/2025">2024/2025</option>
+        <option value="" id="opt-all-years">All Academic Years (125)</option>
+        <option value="2027/2028" selected>2027/2028</option>
+      </select>
+
+      <!-- Semester Filter -->
+      <select id="filter-semester" class="select-control">
+        <option value="" id="opt-sem-all">All Semesters</option>
+        <option value="Autumn 2027" id="opt-sem-autumn">Autumn 2027</option>
+        <option value="Spring 2028" id="opt-sem-spring">Spring 2028</option>
+        <option value="Full academic year 2027-2028" id="opt-sem-year">Full academic year 2027-2028</option>
       </select>
 
       <!-- Study Field Multi-Select -->
@@ -3216,6 +3221,10 @@ const I18N = {
     
     search_placeholder: 'Search by university name, city, country, or keyword...',
     all_years: 'All Academic Years',
+    sem_all: 'All Semesters',
+    sem_autumn: 'Autumn 2027',
+    sem_spring: 'Spring 2028',
+    sem_year: 'Full academic year 2027-2028',
     select_fields_title: 'SELECT FIELDS',
     btn_pep_only: 'PEP Only',
     btn_all: 'All',
@@ -3384,6 +3393,10 @@ const I18N = {
     
     search_placeholder: 'חיפוש אוניברסיטה, עיר, מדינה, תחום לימוד, דירוג...',
     all_years: 'כל השנים האקדמיות',
+    sem_all: 'כל הסמסטרים',
+    sem_autumn: 'סמסטר סתיו / א\' 2027',
+    sem_spring: 'סמסטר אביב / ב\' 2028',
+    sem_year: 'שנת לימודים מלאה 2027-2028',
     select_fields_title: 'בחירת תחומי לימוד',
     btn_pep_only: 'פכ"מ בלבד',
     btn_all: 'בחר הכל',
@@ -3538,6 +3551,10 @@ const I18N = {
     
     search_placeholder: 'البحث عن جامعة، مدينة، دولة، تخصص، ترتيب...',
     all_years: 'جميع السنوات الأكاديمية',
+    sem_all: 'جميع الفصول الدراسية',
+    sem_autumn: 'خريف 2027',
+    sem_spring: 'ربيع 2028',
+    sem_year: 'سنة دراسية كاملة 2027-2028',
     select_fields_title: 'تحديد مجالات الدراسة',
     btn_pep_only: 'برنامج PEP فقط',
     btn_all: 'تحديد الكل',
@@ -4271,6 +4288,10 @@ function setLanguage(lang) {
 
   // Selects
   document.getElementById('opt-all-years').innerText = `${t.all_years} (${RAW_DESTINATIONS.length})`;
+  if (document.getElementById('opt-sem-all')) document.getElementById('opt-sem-all').innerText = t.sem_all;
+  if (document.getElementById('opt-sem-autumn')) document.getElementById('opt-sem-autumn').innerText = t.sem_autumn;
+  if (document.getElementById('opt-sem-spring')) document.getElementById('opt-sem-spring').innerText = t.sem_spring;
+  if (document.getElementById('opt-sem-year')) document.getElementById('opt-sem-year').innerText = t.sem_year;
   document.getElementById('i18n-select-fields-title').innerText = t.select_fields_title;
   document.getElementById('btn-quick-all').innerText = t.btn_all;
   document.getElementById('btn-quick-clear').innerText = t.btn_clear;
@@ -4614,7 +4635,8 @@ const END_MONTH_ORDER = {
   'March': 15,
   'April': 16
 };
-let activeYear = '';
+let activeYear = '2027/2028';
+let activeSemester = '';
 let activeProgram = '';
 let activeCountry = '';
 let jewishOnly = false;
@@ -5022,6 +5044,37 @@ function destinationMatchesFields(d, selectedFields) {
   return false;
 }
 
+// Check if destination is available for the given semester
+function destinationMatchesSemester(d, sem) {
+  if (!sem) return true;
+  const spots = (d.available_spots || '').trim();
+  const notes = (d.notes || '').trim();
+
+  // Strictly fall only if entire agreement/spots is Fall only
+  const isFallOnly = /^\s*\d+[^|]*\bfall\s*(2027)?\s*only\b/i.test(spots);
+
+  // Strictly spring only if entire agreement/spots is Spring only
+  const isSpringOnly = /^\s*\d+[^|]*\bspring\s*(2028)?\s*(semester)?\s*only\b/i.test(spots);
+
+  // Full academic year only
+  const notesLower = notes.toLowerCase();
+  const isFullYearOnly = notesLower.includes('full academic year each') ||
+                         notesLower.includes('full academic year exchange') ||
+                         notesLower.includes('full academic year!');
+
+  if (sem === 'Autumn 2027') {
+    if (isSpringOnly || isFullYearOnly) return false;
+    return true;
+  } else if (sem === 'Spring 2028') {
+    if (isFallOnly || isFullYearOnly) return false;
+    return true;
+  } else if (sem === 'Full academic year 2027-2028') {
+    if (isFallOnly || isSpringOnly) return false;
+    return true;
+  }
+  return true;
+}
+
 // Dynamic Base Filter: filters by all active criteria EXCEPT the rating category itself
 function getBaseFilteredDestinations(ignoreLevel = false) {
   const query = (document.getElementById('search-input') ? document.getElementById('search-input').value : '').toLowerCase().trim();
@@ -5032,6 +5085,9 @@ function getBaseFilteredDestinations(ignoreLevel = false) {
 
     // Academic Year filter
     if (activeYear && !d.academic_years.includes(activeYear)) return false;
+
+    // Semester filter
+    if (activeSemester && !destinationMatchesSemester(d, activeSemester)) return false;
 
     // Program filter
     if (activeProgram && !d.programs.some(p => p.includes(activeProgram))) return false;
@@ -5083,6 +5139,10 @@ function getBaseFilteredDestinations(ignoreLevel = false) {
 function applyFilters() {
   const fC = document.getElementById('filter-country');
   if (fC) activeCountry = fC.value;
+  const fY = document.getElementById('filter-year');
+  if (fY) activeYear = fY.value;
+  const fS = document.getElementById('filter-semester');
+  if (fS) activeSemester = fS.value;
   renderCards();
 }
 
@@ -5587,10 +5647,23 @@ function initApp() {
 
   // Academic year
   const fYear = document.getElementById('filter-year');
-  if (fYear) fYear.addEventListener('change', (e) => {
-    activeYear = e.target.value;
-    renderCards();
-  });
+  if (fYear) {
+    activeYear = fYear.value;
+    fYear.addEventListener('change', (e) => {
+      activeYear = e.target.value;
+      renderCards();
+    });
+  }
+
+  // Semester filter
+  const fSemester = document.getElementById('filter-semester');
+  if (fSemester) {
+    activeSemester = fSemester.value;
+    fSemester.addEventListener('change', (e) => {
+      activeSemester = e.target.value;
+      renderCards();
+    });
+  }
 
   // Program filter
   const fProg = document.getElementById('filter-program');
