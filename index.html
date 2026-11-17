@@ -1044,10 +1044,19 @@
       color: #CBD5E1;
       white-space: nowrap;
     }
-    .tag-badge.tag-pep {
+    .tag-badge.tag-matched {
       background: rgba(37, 99, 235, 0.2);
       color: #93C5FD;
       border: 1px solid rgba(37, 99, 235, 0.3);
+    }
+    .field-more-toggle {
+      border: 0;
+      cursor: pointer;
+      font: inherit;
+    }
+    .field-more-toggle:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #FFFFFF;
     }
 
     /* CARD FOOTER & FACTSHEET BUTTON */
@@ -2463,8 +2472,8 @@
       </div>
       <div class="header-right">
         <div class="header-actions">
-          <a href="HUJI_PEP_Exchange_Options.xlsx" class="btn btn-excel" id="i18n-btn-excel" download>
-            <i class="fa-solid fa-file-excel"></i> Download Excel (Color-Coded)
+          <a href="HUJI_PEP_Exchange_Options.csv" class="btn btn-excel" id="i18n-btn-excel" download>
+            <i class="fa-solid fa-file-csv"></i> Download Exchange Data (CSV)
           </a>
           <button class="btn btn-sync" id="i18n-btn-sync" onclick="openSyncModal()">
             <i class="fa-solid fa-mobile-screen-button"></i> Sync / Share
@@ -2555,7 +2564,7 @@
     <div class="stat-card stat-green">
       <span class="stat-label" id="i18n-stat-green-lbl">🟢 Green Priority</span>
       <span class="stat-val" id="stat-green">11</span>
-      <span class="stat-sub" id="i18n-stat-green-sub">Top ranked PEP / Econ targets</span>
+      <span class="stat-sub" id="i18n-stat-green-sub">Top ranked destinations</span>
     </div>
     <div class="stat-card stat-yellow">
       <span class="stat-label" id="i18n-stat-yellow-lbl">🟡 Yellow Potential</span>
@@ -2651,6 +2660,10 @@
         <span class="filter-title" id="i18n-lbl-start-month"><i class="fa-solid fa-calendar-days"></i> Start Month:</span>
         <select id="filter-start-month" class="select-control" style="height: 36px; min-width: 130px; font-size: 0.82rem;">
           <option value="" id="opt-start-all">All Months</option>
+          <option value="January" id="opt-start-jan">From January</option>
+          <option value="February" id="opt-start-feb">From February</option>
+          <option value="March" id="opt-start-mar">From March</option>
+          <option value="April" id="opt-start-apr">From April</option>
           <option value="August" id="opt-start-aug">From August</option>
           <option value="September" id="opt-start-sep">From September</option>
           <option value="October" id="opt-start-oct">From October</option>
@@ -2665,6 +2678,10 @@
           <option value="December" id="opt-end-dec">Until December</option>
           <option value="January" id="opt-end-jan">Until January</option>
           <option value="February" id="opt-end-feb">Until February</option>
+          <option value="May" id="opt-end-may">Until May</option>
+          <option value="June" id="opt-end-jun">Until June</option>
+          <option value="July" id="opt-end-jul">Until July</option>
+          <option value="August" id="opt-end-aug">Until August</option>
         </select>
       </div>
 
@@ -3189,7 +3206,7 @@ const I18N = {
     lang_en_rec: 'Recommended',
     app_sub: 'An AI-powered platform organizing and simplifying HUJI Mobility-Online student exchange data.',
     disclaimer_text: '<strong>Disclaimer:</strong> This website was created using AI based on official HUJI Mobility-Online data. Please always verify final deadlines, eligibility, and course offerings directly with official Mobility-Online agreements and partner factsheets.',
-    btn_excel: '<i class="fa-solid fa-file-excel"></i> Download Excel (Color-Coded)',
+    btn_excel: '<i class="fa-solid fa-file-csv"></i> Download Exchange Data (CSV)',
     btn_csv: '<i class="fa-solid fa-file-csv"></i> Download CSV',
     btn_export: '<i class="fa-solid fa-floppy-disk"></i> Export Ratings',
     btn_reset: '<i class="fa-solid fa-rotate-left"></i> Reset Changes',
@@ -3211,7 +3228,7 @@ const I18N = {
     stat_total_lbl: 'Active Destinations',
     stat_total_sub: 'Across 26 countries',
     stat_green_lbl: '🟢 Green Priority',
-    stat_green_sub: 'Top ranked PEP / Econ targets',
+    stat_green_sub: 'Top ranked destinations',
     stat_yellow_lbl: '🟡 Yellow Potential',
     stat_yellow_sub: 'Secondary contenders',
     stat_red_lbl: '🔴 Red / Pass',
@@ -3226,7 +3243,6 @@ const I18N = {
     sem_spring: 'Spring 2028',
     sem_year: 'Full academic year 2027-2028',
     select_fields_title: 'SELECT FIELDS',
-    btn_pep_only: 'PEP Only',
     btn_all: 'All',
     btn_clear: 'Clear',
     filter_fields_input: 'Filter fields...',
@@ -3246,12 +3262,20 @@ const I18N = {
     lbl_start_month: '<i class="fa-solid fa-calendar-days"></i> Start Month:',
     lbl_end_month: '<i class="fa-solid fa-calendar-check"></i> End Month:',
     all_months: 'All Months',
+    month_jan_start: 'From January',
+    month_feb_start: 'From February',
+    month_mar_start: 'From March',
+    month_apr_start: 'From April',
     month_aug: 'From August',
     month_sep: 'From September',
     month_oct: 'From October',
     month_dec: 'Until December',
     month_jan: 'Until January',
     month_feb: 'Until February',
+    month_may: 'Until May',
+    month_jun: 'Until June',
+    month_jul: 'Until July',
+    month_aug_end: 'Until August',
     
     jewish_btn: '✡️ Jewish and Kosher Options',
     humanities_btn: '🏛️ Humanities Only',
@@ -3361,7 +3385,7 @@ const I18N = {
     lang_en_rec: 'מומלץ',
     app_sub: 'פלטפורמה מבוססת בינה מלאכותית (AI) לארגון ופישוט נתוני חילופי הסטודנטים מפורטל Mobility-Online.',
     disclaimer_text: '<strong>הבהרה:</strong> אתר זה נבנה באמצעות כלי AI על בסיס נתוני מערכת Mobility-Online של האוניברסיטה העברית. יש לוודא תמיד מועדים, תנאי קבלה וקורסים סופיים ישירות מול הסכמי הפורטל הרשמי ודפי המידע (Fact Sheets) של המוסדות השותפים.',
-    btn_excel: '<i class="fa-solid fa-file-excel"></i> הורדת אקסל (צבעוני ומסודר)',
+    btn_excel: '<i class="fa-solid fa-file-csv"></i> הורדת נתוני חילופי הסטודנטים (CSV)',
     btn_csv: '<i class="fa-solid fa-file-csv"></i> הורדת CSV',
     btn_export: '<i class="fa-solid fa-floppy-disk"></i> ייצוא דירוגים',
     btn_reset: '<i class="fa-solid fa-rotate-left"></i> איפוס שינויים',
@@ -3383,7 +3407,7 @@ const I18N = {
     stat_total_lbl: 'יעדים פעילים',
     stat_total_sub: 'ב-24 מדינות',
     stat_green_lbl: '🟢 עדיפות ירוקה',
-    stat_green_sub: 'יעדי פכ"מ וכלכלה מובילים',
+    stat_green_sub: 'יעדים מובילים',
     stat_yellow_lbl: '🟡 פוטנציאל צהוב',
     stat_yellow_sub: 'אפשרויות משניות',
     stat_red_lbl: '🔴 עדיפות נמוכה',
@@ -3398,7 +3422,6 @@ const I18N = {
     sem_spring: 'סמסטר אביב / ב\' 2028',
     sem_year: 'שנת לימודים מלאה 2027-2028',
     select_fields_title: 'בחירת תחומי לימוד',
-    btn_pep_only: 'פכ"מ בלבד',
     btn_all: 'בחר הכל',
     btn_clear: 'נקה הכל',
     filter_fields_input: 'חיפוש תחומי לימוד...',
@@ -3418,12 +3441,20 @@ const I18N = {
     lbl_start_month: '<i class="fa-regular fa-calendar-check"></i> חודש תחילת סמסטר',
     lbl_end_month: '<i class="fa-regular fa-calendar-xmark"></i> חודש סיום (לאחר מבחנים)',
     all_months: 'כל החודשים',
+    month_jan_start: 'החל מינואר',
+    month_feb_start: 'החל מפברואר',
+    month_mar_start: 'החל ממרץ',
+    month_apr_start: 'החל מאפריל',
     month_aug: 'החל מאוגוסט',
     month_sep: 'החל מספטמבר',
     month_oct: 'החל מאוקטובר',
     month_dec: 'עד דצמבר',
     month_jan: 'עד ינואר',
     month_feb: 'עד פברואר',
+    month_may: 'עד מאי',
+    month_jun: 'עד יוני',
+    month_jul: 'עד יולי',
+    month_aug_end: 'עד אוגוסט',
     
     jewish_btn: '✡️ אפשרויות יהדות וכשרות',
     humanities_btn: '🏛️ מדעי הרוח בלבד',
@@ -3533,7 +3564,7 @@ const I18N = {
     lang_en_rec: 'موصى به',
     app_sub: 'منصة ذكية مدعومة بالذكاء الاصطناعي لتنظيم وتبسيط بيانات التبادل الطلابي من بوابة Mobility-Online في الجامعة العبرية.',
     disclaimer_text: '<strong>إخلاء مسؤولية:</strong> تم إنشاء هذه المنصة باستخدام الذكاء الاصطناعي استناداً إلى بيانات نظام Mobility-Online الرسمي في الجامعة العبرية. يرجى دائماً التأكد من المواعيد النهائية والشروط وقوائم المساقات عبر اتفاقيات البوابة الرسمية وكتيبات الجامعات الشريكة.',
-    btn_excel: '<i class="fa-solid fa-file-excel"></i> تحميل ملف إكسل (منسق وملون)',
+    btn_excel: '<i class="fa-solid fa-file-csv"></i> تحميل بيانات التبادل الطلابي (CSV)',
     btn_csv: '<i class="fa-solid fa-file-csv"></i> تحميل ملف CSV',
     btn_export: '<i class="fa-solid fa-floppy-disk"></i> تصدير التقييمات',
     btn_reset: '<i class="fa-solid fa-rotate-left"></i> إعادة ضبط التغييرات',
@@ -3541,7 +3572,7 @@ const I18N = {
     stat_total_lbl: 'الوجهات النشطة',
     stat_total_sub: 'عبر 26 دولة',
     stat_green_lbl: '🟢 أولوية خضراء',
-    stat_green_sub: 'وجهات رائدة لـ PEP والاقتصاد',
+    stat_green_sub: 'وجهات رائدة',
     stat_yellow_lbl: '🟡 خيارات محتملة',
     stat_yellow_sub: 'وجهات ثانوية مرشحة',
     stat_red_lbl: '🔴 أولوية منخفضة',
@@ -3556,7 +3587,6 @@ const I18N = {
     sem_spring: 'ربيع 2028',
     sem_year: 'سنة دراسية كاملة 2027-2028',
     select_fields_title: 'تحديد مجالات الدراسة',
-    btn_pep_only: 'برنامج PEP فقط',
     btn_all: 'تحديد الكل',
     btn_clear: 'إلغاء التحديد',
     filter_fields_input: 'تصفية مجالات الدراسة...',
@@ -3576,12 +3606,20 @@ const I18N = {
     lbl_start_month: '<i class="fa-regular fa-calendar-check"></i> شهر بدء الفصل',
     lbl_end_month: '<i class="fa-regular fa-calendar-xmark"></i> شهر الانتهاء (شاملاً الامتحانات)',
     all_months: 'كافة الشهور',
+    month_jan_start: 'ابتداءً من يناير',
+    month_feb_start: 'ابتداءً من فبراير',
+    month_mar_start: 'ابتداءً من مارس',
+    month_apr_start: 'ابتداءً من أبريل',
     month_aug: 'ابتداءً من أغسطس',
     month_sep: 'ابتداءً من سبتمبر',
     month_oct: 'ابتداءً من أكتوبر',
     month_dec: 'حتى ديسمبر',
     month_jan: 'حتى يناير',
     month_feb: 'حتى فبراير',
+    month_may: 'حتى مايو',
+    month_jun: 'حتى يونيو',
+    month_jul: 'حتى يوليو',
+    month_aug_end: 'حتى أغسطس',
     
     jewish_btn: '✡️ خيارات الجالية اليهودية والكوشر',
     humanities_btn: '🏛️ كلية العلوم الإنسانية فقط',
@@ -4324,6 +4362,10 @@ function setLanguage(lang) {
 
   document.getElementById('i18n-lbl-start-month').innerHTML = t.lbl_start_month;
   document.getElementById('opt-start-all').innerText = t.all_months;
+  document.getElementById('opt-start-jan').innerText = t.month_jan_start;
+  document.getElementById('opt-start-feb').innerText = t.month_feb_start;
+  document.getElementById('opt-start-mar').innerText = t.month_mar_start;
+  document.getElementById('opt-start-apr').innerText = t.month_apr_start;
   document.getElementById('opt-start-aug').innerText = t.month_aug;
   document.getElementById('opt-start-sep').innerText = t.month_sep;
   document.getElementById('opt-start-oct').innerText = t.month_oct;
@@ -4333,6 +4375,10 @@ function setLanguage(lang) {
   document.getElementById('opt-end-dec').innerText = t.month_dec;
   document.getElementById('opt-end-jan').innerText = t.month_jan;
   document.getElementById('opt-end-feb').innerText = t.month_feb;
+  document.getElementById('opt-end-may').innerText = t.month_may;
+  document.getElementById('opt-end-jun').innerText = t.month_jun;
+  document.getElementById('opt-end-jul').innerText = t.month_jul;
+  document.getElementById('opt-end-aug').innerText = t.month_aug_end;
 
   document.getElementById('jewish-filter-btn').innerText = `${t.jewish_btn} (${jewish_cnt})`;
 
@@ -4586,6 +4632,13 @@ function updateMapMarkers() {
     items.forEach(d => {
       const choice = getCardChoice(d.id);
       const rating = userRatings[d.name] || d.user_rating || 'unrated';
+      const mapDateRange = activeSemester ? getSemesterDateRange(d, activeSemester) : getSemesterDateRange(d, 'Autumn 2027');
+      const mapStart = activeSemester === 'Spring 2028'
+        ? (mapDateRange ? `Spring 2028: ${mapDateRange.start}` : 'Spring 2028: date not specified')
+        : d.calendar_start;
+      const mapEnd = activeSemester === 'Spring 2028'
+        ? (mapDateRange ? `Spring 2028: ${mapDateRange.end}` : 'Spring 2028: date not specified')
+        : d.calendar_end;
       const ratingBadge = rating === 'green' ? '🟢 Green' : (rating === 'yellow' ? '🟡 Yellow' : (rating === 'red' ? '🔴 Red' : '⚪ Unrated'));
       const choiceBadge = choice ? `<span class="map-popup-badge" style="background:#F59E0B;color:#0F172A;font-weight:800;">${choice === 1 ? '🥇 #1' : (choice === 2 ? '🥈 #2' : '🥉 #3')}</span>` : '';
       const note = userNotes[d.id] ? `<div style="font-size:0.72rem;color:#60A5FA;margin-top:2px;font-style:italic;"><i class="fa-regular fa-comment-dots"></i> ${userNotes[d.id].slice(0, 45)}...</div>` : '';
@@ -4598,7 +4651,7 @@ function updateMapMarkers() {
             ${choiceBadge}
           </div>
           <div class="map-popup-rank"><i class="fa-solid fa-trophy"></i> ${d.general_rank || d.rank_info}</div>
-          <div style="font-size:0.75rem; color:#94A3B8;"><i class="fa-regular fa-calendar"></i> ${d.calendar_start} → ${d.calendar_end}</div>
+          <div style="font-size:0.75rem; color:#94A3B8;"><i class="fa-regular fa-calendar"></i> ${mapStart} → ${mapEnd}</div>
           ${note}
           <button type="button" class="map-popup-jump-btn" onclick="jumpToCard('${d.id}')">
             <i class="fa-solid fa-arrow-right"></i> ${t.view_card_btn || 'View Card Details'}
@@ -4620,6 +4673,10 @@ let activeStartMonth = '';
 let activeEndMonth = '';
 
 const START_MONTH_ORDER = {
+  'January': 1,
+  'February': 2,
+  'March': 3,
+  'April': 4,
   'July': 7,
   'August': 8,
   'September': 9,
@@ -4633,7 +4690,11 @@ const END_MONTH_ORDER = {
   'January': 13,
   'February': 14,
   'March': 15,
-  'April': 16
+  'April': 16,
+  'May': 17,
+  'June': 18,
+  'July': 19,
+  'August': 20
 };
 let activeYear = '2027/2028';
 let activeSemester = '';
@@ -4704,17 +4765,6 @@ function selectAllFields(select) {
     selectedFields.clear();
     cbs.forEach(cb => cb.checked = false);
   }
-  updateFieldBtnText();
-  renderCards();
-}
-
-function quickSelectPEP() {
-  const pepField = "Integrative Program in Philosophy, Economics, and Politics (PEP)";
-  selectedFields = new Set([pepField]);
-  const cbs = document.querySelectorAll('#multiselect-list input[type="checkbox"]');
-  cbs.forEach(cb => {
-    cb.checked = (cb.value === pepField);
-  });
   updateFieldBtnText();
   renderCards();
 }
@@ -5007,24 +5057,15 @@ function exportRankingsJSON() {
   dlAnchorElem.click();
 }
 
-function isPepField(str) {
-  if (!str) return false;
-  return str.includes('PEP') || str.includes('פכ"מ') || str.includes('Philosophy, Economics, and Politics');
-}
-
 function isFieldMatchExact(itemField, selectedField) {
-  if (itemField === selectedField) return true;
-
-  const isSelPep = isPepField(selectedField);
-  const isItemPep = isPepField(itemField);
-
-  if (isSelPep && isItemPep) return true;
-  if (isSelPep || isItemPep) return false;
+  if (!itemField || !selectedField) return false;
+  const normalize = value => value.trim().replace(/\s+/g, ' ').toLowerCase();
+  if (normalize(itemField) === normalize(selectedField)) return true;
 
   // For compound fields like "Political Science & International Relations", allow matching sub-components
   if (itemField.includes('&')) {
-    const parts = itemField.split('&').map(p => p.trim());
-    if (parts.includes(selectedField)) return true;
+    const parts = itemField.split('&').map(p => normalize(p));
+    if (parts.includes(normalize(selectedField))) return true;
   }
 
   return false;
@@ -5044,13 +5085,78 @@ function destinationMatchesFields(d, selectedFields) {
   return false;
 }
 
+const MONTH_NAMES = {
+  january: 'January',
+  jan: 'January',
+  february: 'February',
+  feb: 'February',
+  march: 'March',
+  mar: 'March',
+  april: 'April',
+  apr: 'April',
+  may: 'May',
+  june: 'June',
+  jun: 'June',
+  july: 'July',
+  jul: 'July',
+  august: 'August',
+  aug: 'August',
+  september: 'September',
+  sep: 'September',
+  sept: 'September',
+  october: 'October',
+  oct: 'October',
+  november: 'November',
+  nov: 'November',
+  december: 'December',
+  dec: 'December'
+};
+
+function monthFromDateToken(token) {
+  const normalized = token.toLowerCase();
+  const named = Object.keys(MONTH_NAMES).find(month => normalized.includes(month));
+  if (named) return MONTH_NAMES[named];
+
+  const numeric = normalized.match(/(?:^|[^\d])\d{1,2}[./](\d{1,2})(?:[./]\d{2,4})?/);
+  if (!numeric) return null;
+  const monthNumber = Number(numeric[1]);
+  return Object.values(MONTH_NAMES)[monthNumber - 1] || null;
+}
+
+function getSemesterDateRange(d, sem) {
+  if (sem === 'Autumn 2027') {
+    return d.start_month && d.end_month ? { start: d.start_month, end: d.end_month } : null;
+  }
+
+  if (sem === 'Full academic year 2027-2028') {
+    const endText = d.calendar_end || '';
+    const endTokens = endText.match(/\b(?:January|February|March|April|May|June|July|August|September|October|November|December)\b/gi) || [];
+    const end = (endTokens.length ? monthFromDateToken(endTokens[endTokens.length - 1]) : null) || d.end_month;
+    return d.start_month && end ? { start: d.start_month, end } : null;
+  }
+
+  if (sem !== 'Spring 2028') return null;
+
+  const text = `${d.notes || ''} ${d.available_spots || ''}`
+    .replace(/&ndash;|&#126;|–|—/gi, '-')
+    .replace(/semeste\s+r/gi, 'semester')
+    .replace(/\s+/g, ' ');
+  const springIndex = text.search(/spring(?:\s+semester)?|second\s+semester/i);
+  if (springIndex < 0) return null;
+  const springText = text.slice(springIndex).split(/[;|]/, 1)[0];
+  const monthTokens = springText.match(/\b(?:january|jan|february|feb|march|mar|april|apr|may|june|jun|july|jul|august|aug|september|sept?|sep|october|oct|november|nov|december|dec|\d{1,2}[./]\d{1,2}(?:[./]\d{2,4})?)\b/gi) || [];
+  const months = monthTokens.map(monthFromDateToken).filter(Boolean);
+  const start = months[0];
+  const end = months[1];
+  return start && end ? { start, end } : null;
+}
+
 // Check if destination is available for the given semester
 function destinationMatchesSemester(d, sem) {
   if (!sem) return true;
   const spots = (d.available_spots || '').trim();
   const notes = (d.notes || '').trim();
 
-  // Strictly fall only if entire agreement/spots is Fall only
   const isFallOnly = /^\s*\d+[^|]*\bfall\s*(2027)?\s*only\b/i.test(spots);
 
   // Strictly spring only if entire agreement/spots is Spring only
@@ -5097,15 +5203,19 @@ function getBaseFilteredDestinations(ignoreLevel = false) {
 
     // Start month filter (from chosen month onwards)
     if (activeStartMonth) {
+      const range = activeSemester ? getSemesterDateRange(d, activeSemester) : getSemesterDateRange(d, 'Autumn 2027');
+      if (!range) return false;
       const chosenStart = START_MONTH_ORDER[activeStartMonth] || 0;
-      const dStart = START_MONTH_ORDER[d.start_month] || 0;
+      const dStart = START_MONTH_ORDER[range.start] || 0;
       if (dStart < chosenStart) return false;
     }
 
     // End month filter (until chosen end month)
     if (activeEndMonth) {
+      const range = activeSemester ? getSemesterDateRange(d, activeSemester) : getSemesterDateRange(d, 'Autumn 2027');
+      if (!range) return false;
       const chosenEnd = END_MONTH_ORDER[activeEndMonth] || 99;
-      const dEnd = END_MONTH_ORDER[d.end_month] || 99;
+      const dEnd = END_MONTH_ORDER[range.end] || 99;
       if (dEnd > chosenEnd) return false;
     }
 
@@ -5307,6 +5417,19 @@ function formatSpotsBadge(d, t, lang) {
   `;
 }
 
+function toggleFieldDetails(id, button, e) {
+  if (e) e.stopPropagation();
+  const extraFields = document.getElementById(`extra-fields-${id}`);
+  if (!extraFields || !button) return;
+
+  const expanded = !extraFields.hidden;
+  extraFields.hidden = expanded;
+  button.setAttribute('aria-expanded', String(!expanded));
+  button.innerText = expanded
+    ? `+${button.dataset.count} ${button.dataset.moreLabel}`
+    : `− ${button.dataset.lessLabel}`;
+}
+
 function renderCards() {
   updateStats();
   const filtered = getFilteredDestinations();
@@ -5331,6 +5454,13 @@ function renderCards() {
     const tierClass = rating === 'green' ? 'tier-green' : (rating === 'yellow' ? 'tier-yellow' : (rating === 'red' ? 'tier-red' : ''));
     const cardChoice = getCardChoice(d.id);
     const choiceClass = cardChoice ? 'is-choice-' + cardChoice : '';
+    const displayedDateRange = activeSemester ? getSemesterDateRange(d, activeSemester) : getSemesterDateRange(d, 'Autumn 2027');
+    const displayedStart = activeSemester === 'Spring 2028'
+      ? (displayedDateRange ? `Spring 2028: ${displayedDateRange.start}` : 'Spring 2028: date not specified')
+      : d.calendar_start;
+    const displayedEnd = activeSemester === 'Spring 2028'
+      ? (displayedDateRange ? `Spring 2028: ${displayedDateRange.end}` : 'Spring 2028: date not specified')
+      : d.calendar_end;
 
     let choiceBadgeHtml = '';
     if (cardChoice === 1) {
@@ -5417,11 +5547,12 @@ function renderCards() {
       });
     }
 
-    const fieldBadges = displayFields.slice(0, 4).map(f => {
+    const renderFieldBadge = f => {
       const isMatched = isFieldMatch(f);
       const locFieldName = getLocalizedField(f, currentLang);
-      return `<span class="tag-badge ${isMatched ? 'tag-pep' : ''}">${locFieldName}</span>`;
-    }).join('');
+      return `<span class="tag-badge ${isMatched ? 'tag-matched' : ''}">${locFieldName}</span>`;
+    };
+    const fieldBadges = displayFields.slice(0, 4).map(renderFieldBadge).join('');
 
     let humanitiesBadgeHtml = '';
     if (d.humanities_only) {
@@ -5431,7 +5562,14 @@ function renderCards() {
     }
 
     const moreTxt = currentLang === 'he' ? 'עוד' : (currentLang === 'ar' ? 'إضافية' : 'more');
-    const extraCount = displayFields.length > 4 ? `<span class="tag-badge">+${displayFields.length - 4} ${moreTxt}</span>` : '';
+    const lessTxt = currentLang === 'he' ? 'פחות' : (currentLang === 'ar' ? 'أقل' : 'less');
+    const hiddenFields = displayFields.slice(4);
+    const extraFields = hiddenFields.length
+      ? `<span class="field-extra-list" id="extra-fields-${d.id}" hidden>${hiddenFields.map(renderFieldBadge).join('')}</span>`
+      : '';
+    const extraCount = hiddenFields.length
+      ? `<button type="button" class="tag-badge field-more-toggle" data-count="${hiddenFields.length}" data-more-label="${moreTxt}" data-less-label="${lessTxt}" aria-expanded="false" onclick="toggleFieldDetails('${d.id}', this, event)">+${hiddenFields.length} ${moreTxt}</button>`
+      : '';
 
     // Localized Degree Levels
     const locLevels = d.study_levels.map(l => getLocalizedLevel(l, currentLang)).join(' • ');
@@ -5451,12 +5589,10 @@ function renderCards() {
 
         if (d.subject_ranks && d.subject_ranks[field]) {
           fieldRank = d.subject_ranks[field];
-        } else if (field.includes('PEP') || field.includes('פכ"מ') || field.includes('פילוסופיה, כלכלה')) {
-          fieldRank = (d.subject_ranks && (d.subject_ranks['Integrative Program in Philosophy, Economics, and Politics (PEP)'] || d.subject_ranks['PEP'])) || d.rank_info;
         } else if (d.subject_ranks) {
-          // Fuzzy match on subject_ranks keys
+          const normalizeRankKey = value => value.trim().replace(/\s+/g, ' ').toLowerCase();
           for (const [subKey, subVal] of Object.entries(d.subject_ranks)) {
-            if (field.toLowerCase().includes(subKey.toLowerCase()) || subKey.toLowerCase().includes(field.toLowerCase())) {
+            if (normalizeRankKey(field) === normalizeRankKey(subKey)) {
               fieldRank = subVal;
               break;
             }
@@ -5516,11 +5652,11 @@ function renderCards() {
         <div class="metrics-grid">
           <div class="metric-cell">
             <span class="metric-label"><i class="fa-solid fa-calendar"></i> ${t.sem_start}</span>
-            <span class="metric-val">${d.calendar_start}</span>
+            <span class="metric-val">${displayedStart}</span>
           </div>
           <div class="metric-cell">
             <span class="metric-label"><i class="fa-solid fa-flag-checkered"></i> ${t.tests_finish}</span>
-            <span class="metric-val" style="color: #60A5FA;">${d.calendar_end}</span>
+            <span class="metric-val" style="color: #60A5FA;">${displayedEnd}</span>
           </div>
           <div class="metric-cell full-width" style="background: rgba(37, 99, 235, 0.08); border: 1px solid rgba(37, 99, 235, 0.25);">
             <span class="metric-label" style="color: #93C5FD;"><i class="fa-solid fa-clipboard-check"></i> ${t.exam_schedule}</span>
@@ -5559,6 +5695,7 @@ function renderCards() {
         <!-- Study Fields Tags -->
         <div class="tags-row">
           ${fieldBadges}
+          ${extraFields}
           ${extraCount}
         </div>
 

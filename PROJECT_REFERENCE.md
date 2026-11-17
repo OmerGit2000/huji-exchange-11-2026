@@ -129,6 +129,7 @@ User action (filter change / search / sort)
 | `getBaseFilteredDestinations(ignoreLevel)` | Core filtering engine |
 | `destinationMatchesSemester(d, sem)` | Semester restriction logic |
 | `destinationMatchesFields(d, selectedFields)` | Study field matching |
+| `toggleFieldDetails(id, button, event)` | Expand/collapse all study-field badges on a card |
 | `isFieldMatchExact(itemField, selectedField)` | Exact field comparison with PEP handling |
 | `isPepField(field)` | Detects PEP program field name |
 | `updateStats()` | Recalculates stat strip and level pill counts |
@@ -180,11 +181,13 @@ The semester filter restricts by explicit semester-only constraints found in des
 
 The detection uses regex on `available_spots` and `notes` fields — see `destinationMatchesSemester()`.
 
+When a semester is selected, the start/end month filters use that semester's calendar range from the destination notes. Spring ranges such as January–May, March–June, and April–September are not reused from the autumn dates. Cards also display the selected spring range instead of showing the autumn calendar.
+
 ### 4.4 PEP Field Filtering
 
 "PEP" = **Integrative Program in Philosophy, Economics, and Politics**. In Hebrew: **פכ"מ** (פילוסופיה, כלכלה ומדע המדינה).
 
-The field name in the data is `"Integrative Program in Philosophy, Economics, and Politics (PEP)"`. The `isPepField()` function uses strict matching to prevent false positives (e.g., the word "Pesquisa" in Brazilian university names was previously a false match).
+The field is handled by the same generic study-field matching and ranking code as Economics, Philosophy, Political Science, and every other field. There is no PEP-only filter, ranking path, or result treatment. Humanities-only agreements remain the only field-specific UX.
 
 ---
 
@@ -227,21 +230,22 @@ No npm, no build tools, no server-side code.
 ## 7. Features Summary
 
 1. **Card Grid View** — Sortable, filterable cards for each destination
-2. **Interactive Map** — Leaflet world map with clickable pins
-3. **Personal Ratings** — Green (excited) / Yellow (maybe) / Red (not interested)
-4. **Top 3 Preferences** — Drag priority picks (slot 1, 2, 3)
-5. **Personal Notes** — Free-text notes per destination (saved locally)
-6. **Multi-language** — English / Hebrew / Arabic with full RTL support
-7. **Study Field Multi-Select** — 87 checkboxes with search, quick "All"/"Clear"
-8. **Cost of Living** — USD monthly estimates + local currency
-9. **Jewish Community Info** — Synagogues, kosher dining per city
-10. **QS World Rankings** — General + per-subject rankings
-11. **Fact Sheet Links** — Direct PDF downloads from `Partner_Factsheets/`
-12. **Cross-Device Sync** — QR code / share link to sync ratings between devices
-13. **Application Instructions** — Collapsible HUJI-specific application guide
-14. **Financial Notice Banner** — Prominent tuition/scholarship info banner
-15. **Sort Options** — By rank, country, name, cost, rating, or QS rank
-16. **Mobile Responsive** — Full responsive design with bottom-sheet dropdowns
+2. **Expandable Study Fields** — Click “+N more” on a card to view every available field
+3. **Interactive Map** — Leaflet world map with clickable pins
+4. **Personal Ratings** — Green (excited) / Yellow (maybe) / Red (not interested)
+5. **Top 3 Preferences** — Drag priority picks (slot 1, 2, 3)
+6. **Personal Notes** — Free-text notes per destination (saved locally)
+7. **Multi-language** — English / Hebrew / Arabic with full RTL support
+8. **Study Field Multi-Select** — 87 checkboxes with search, quick "All"/"Clear"
+9. **Cost of Living** — USD monthly estimates + local currency
+10. **Jewish Community Info** — Synagogues, kosher dining per city
+11. **QS World Rankings** — General + per-subject rankings
+12. **Fact Sheet Links** — Direct PDF downloads from `Partner_Factsheets/`
+13. **Cross-Device Sync** — QR code / share link to sync ratings between devices
+14. **Application Instructions** — Collapsible HUJI-specific application guide
+15. **Financial Notice Banner** — Prominent tuition/scholarship info banner
+16. **Sort Options** — By rank, country, name, cost, rating, or QS rank
+17. **Mobile Responsive** — Full responsive design with bottom-sheet dropdowns
 
 ---
 
